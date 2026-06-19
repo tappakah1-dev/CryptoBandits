@@ -73,7 +73,7 @@ export default async function handler(req, res) {
         };
 
         // Standard production-supported Imagen 3.0 endpoint in Google AI Studio
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key=${apiKey}`;
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview:generateContent?key=${apiKey}`;
 
         // Forward the request to Google's Imagen API
         const response = await fetch(url, {
