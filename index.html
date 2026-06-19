@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>$CryptoBandits | The Solana Heist</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Special+Elite&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bandit-black: #0b0904;
+            --loot-gold: #d4af37;
+            --getaway-green: #39ff14;
+            --wanted-red: #9c1f1f;
+            --parchment: #efe3c8;
+            --panel-bg: rgba(0, 0, 0, 0.6);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bandit-black);
+            color: #ede6d6;
+            font-family: 'Roboto', sans-serif;
+            text-align: center;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, th {
+            font-family: 'Bebas Neue', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 0;
+        }
+
+        /* Hero Banner Section */
+        .banner-container {
+            width: 100%;
+            position: relative;
+            border-bottom: 2px solid var(--loot-gold);
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
+        }
+
+        .banner-container img {
+            width: 100%;
+            max-height: 500px;
+            object-fit: cover;
+            display: block;
+            filter: contrast(1.05) saturate(1.05);
+        }
+
+        /* Contract Address Box */
+        .ca-container {
+            margin-top: -30px;
+            position: relative;
+            z-index: 10;
+            padding: 0 20px;
+        }
+
+        .ca-box {
+            background: rgba(11, 9, 4, 0.92);
+            border: 2px solid var(--loot-gold);
+            padding: 15px 30px;
+            border-radius: 6px;
+            display: inline-block;
+            font-family: 'Special Elite', monospace;
+            font-size: 1.1rem;
+            color: var(--getaway-green);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+            word-break: break-all;
+            max-width: 100%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .ca-box:hover {
+            transform: scale(1.03);
+            box-shadow: 0 0 30px rgba(57, 255, 20, 0.6);
+        }
+
+        .ca-box span.label {
+            color: var(--parchment);
+            font-weight: bold;
+        }
+
+        /* Wanted Stamp - signature element */
+        .wanted-stamp {
+            display: inline-block;
+            font-family: 'Special Elite', monospace;
+            color: var(--wanted-red);
+            border: 3px solid var(--wanted-red);
+            padding: 8px 22px;
+            transform: rotate(-5deg);
+            letter-spacing: 3px;
+            font-size: 1rem;
+            text-transform: uppercase;
+            border-radius: 2px;
+            position: relative;
+            background:
+                repeating-radial-gradient(circle, rgba(156,31,31,0.05) 0px, transparent 2px, transparent 4px),
+                rgba(0,0,0,0.2);
+            margin: 18px auto;
+        }
+
+        .wanted-stamp.small {
+            font-size: 0.8rem;
+            padding: 5px 14px;
+            margin: 0 0 18px 0;
+        }
+
+        /* Join the Gang Button */
+        .gang-link-wrap {
+            margin-top: 18px;
+        }
+
+        .gang-btn {
+            display: inline-block;
+            padding: 12px 28px;
+            border-radius: 6px;
+            background: var(--getaway-green);
+            color: #000;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            text-decoration: none;
+            box-shadow: 0 0 18px rgba(57, 255, 20, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .gang-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 26px rgba(57, 255, 20, 0.7);
+        }
+
+        /* Lore Section */
+        .lore-section {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 50px;
+            padding: 60px 20px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .lore-img-wrapper {
+            position: relative;
+        }
+
+        .lore-img-wrapper img {
+            width: 320px;
+            max-width: 100%;
+            border-radius: 8px;
+            border: 3px solid var(--loot-gold);
+            box-shadow: 0 0 35px rgba(212, 175, 55, 0.5);
+            animation: float 4s ease-in-out infinite;
+            object-fit: cover;
+            aspect-ratio: 1 / 1;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); box-shadow: 0 15px 40px rgba(57, 255, 20, 0.5); }
+            100% { transform: translateY(0px); }
+        }
+
+        .lore-text {
+            flex: 1;
+            min-width: 300px;
+            text-align: left;
+            background: var(--panel-bg);
+            padding: 30px;
+            border-radius: 10px;
+            border-left: 4px solid var(--loot-gold);
+        }
+
+        .lore-text h2 {
+            color: var(--loot-gold);
+            font-size: 3.5rem;
+            line-height: 1;
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
+        }
+
+        .lore-text p {
+            font-size: 1.15rem;
+            line-height: 1.6;
+            color: #ede6d6;
+        }
+
+        /* Heist Plan (Roadmap) Section */
+        .schedule-section {
+            padding: 60px 20px;
+            background: linear-gradient(180deg, var(--bandit-black) 0%, #15110a 100%);
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .schedule-section h2 {
+            font-size: 3rem;
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+
+        .schedule-section h2 span {
+            color: var(--getaway-green);
+            text-shadow: 0 0 15px rgba(57, 255, 20, 0.5);
+        }
+
+        .schedule-section p.subtitle {
+            color: var(--loot-gold);
+            font-family: 'Special Elite', monospace;
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+        }
+
+        .table-container {
+            max-width: 900px;
+            margin: 0 auto;
+            overflow-x: auto;
+        }
+
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--panel-bg);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.8);
+        }
+
+        .schedule-table th, .schedule-table td {
+            padding: 20px;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            white-space: nowrap;
+        }
+
+        .schedule-table th {
+            background: var(--loot-gold);
+            color: #000;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+        }
+
+        .schedule-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .schedule-table tr:hover {
+            background: rgba(212, 175, 55, 0.08);
+        }
+
+        .schedule-table td.codename {
+            font-family: 'Special Elite', monospace;
+            color: var(--parchment);
+        }
+
+        /* Status Colors */
+        .status-played {
+            color: #4caf50;
+            font-weight: bold;
+        }
+        .status-upcoming {
+            color: var(--loot-gold);
+            font-style: italic;
+        }
+        .highlight-row {
+            background: rgba(57, 255, 20, 0.05);
+        }
+
+        /* Toast Notification */
+        #toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: var(--getaway-green);
+            color: #000;
+            text-align: center;
+            border-radius: 5px;
+            padding: 16px;
+            position: fixed;
+            z-index: 100;
+            left: 50%;
+            bottom: 30px;
+            font-weight: bold;
+            font-family: 'Bebas Neue', sans-serif;
+            transform: translateX(-50%);
+            box-shadow: 0 0 20px rgba(57, 255, 20, 0.5);
+        }
+
+        #toast.show {
+            visibility: visible;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
+
+        @keyframes fadein {
+            from {bottom: 0; opacity: 0;}
+            to {bottom: 30px; opacity: 1;}
+        }
+
+        @keyframes fadeout {
+            from {bottom: 30px; opacity: 1;}
+            to {bottom: 0; opacity: 0;}
+        }
+
+        /* PFP Generator Section */
+        .pfp-section {
+            padding: 60px 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            background: linear-gradient(180deg, rgba(20, 16, 8, 0.8) 0%, var(--bandit-black) 100%);
+            border-radius: 14px;
+            border: 1px solid rgba(212, 175, 55, 0.25);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            margin-bottom: 40px;
+        }
+        .pfp-section h2 {
+            font-size: 3rem;
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+        .pfp-section h2 span {
+            color: var(--getaway-green);
+            text-shadow: 0 0 15px rgba(57, 255, 20, 0.5);
+        }
+        .pfp-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        .pfp-controls input {
+            padding: 15px 25px;
+            font-size: 1.2rem;
+            border-radius: 6px;
+            border: 2px solid var(--loot-gold);
+            background: rgba(0,0,0,0.6);
+            color: #fff;
+            outline: none;
+            font-family: 'Roboto', sans-serif;
+            width: 300px;
+            max-width: 100%;
+        }
+        .pfp-controls input:focus {
+            border-color: var(--getaway-green);
+            box-shadow: 0 0 15px rgba(57, 255, 20, 0.3);
+        }
+        .pfp-btn {
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border-radius: 6px;
+            background: var(--getaway-green);
+            color: #000;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            font-family: 'Bebas Neue', sans-serif;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .pfp-btn:hover:not(:disabled) {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(57, 255, 20, 0.6);
+        }
+        .pfp-btn:disabled {
+            background: #444;
+            color: #888;
+            cursor: not-allowed;
+        }
+        .canvas-container {
+            margin: 20px auto;
+            max-width: 400px;
+            position: relative;
+        }
+        #pfpCanvas {
+            max-width: 100%;
+            height: auto;
+            border-radius: 14px;
+            background: #111;
+            display: none; /* Hidden until generated */
+            box-shadow: 0 0 30px rgba(57, 255, 20, 0.35);
+        }
+        #pfpStatus {
+            color: var(--loot-gold);
+            margin-top: 15px;
+            font-style: italic;
+            font-size: 1.1rem;
+            word-wrap: break-word;
+            padding: 0 10px;
+        }
+
+        /* Loading Spinner */
+        .loader {
+            border: 5px solid rgba(57, 255, 20, 0.1);
+            border-top: 5px solid var(--getaway-green);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+            display: none;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Footer */
+        footer {
+            padding: 30px;
+            background: #050402;
+            color: #777;
+            font-size: 0.95rem;
+            border-top: 2px solid #221b0f;
+        }
+        footer .disclaimer {
+            display: block;
+            margin-top: 8px;
+            font-size: 0.8rem;
+            color: #555;
+        }
+
+        /* Chart Section */
+        .chart-section {
+            padding: 60px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .chart-section h2 {
+            font-size: 3rem;
+            color: #ffffff;
+            margin-bottom: 30px;
+        }
+        .chart-section h2 span {
+            color: var(--getaway-green);
+            text-shadow: 0 0 15px rgba(57, 255, 20, 0.5);
+        }
+        #dexscreener-embed {
+            position: relative;
+            width: 100%;
+            padding-bottom: 125%;
+            border: 2px solid var(--getaway-green);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 25px rgba(57, 255, 20, 0.2);
+            background: var(--panel-bg);
+        }
+        @media(min-width: 1400px) {
+            #dexscreener-embed {
+                padding-bottom: 65%;
+            }
+        }
+        #dexscreener-embed iframe {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            border: 0;
+        }
+
+        @media (max-width: 768px) {
+            .lore-text h2 { font-size: 2.5rem; }
+            .schedule-section h2 { font-size: 2.2rem; }
+            .ca-box { font-size: 0.85rem; padding: 10px 20px; }
+            .schedule-table th, .schedule-table td { padding: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Hero / Banner -->
+    <div class="banner-container">
+        <img src="https://i.ibb.co/Kxv1BD1C/CBCB.png" alt="$CryptoBandits Banner">
+    </div>
+
+    <!-- Contract Address -->
+    <div class="ca-container">
+        <div class="wanted-stamp">Wanted: Your Bags</div>
+        <br>
+        <div class="ca-box" onclick="copyCA()" title="Click to copy CA">
+            <span class="label">CA:</span> <span id="ca-text">EpPytnMzfZdPhMyp8Ak8FmPhZNFPULXDGXiyqrJ8pump</span>
+        </div>
+        <div class="gang-link-wrap">
+            <a class="gang-btn" href="https://x.com/i/communities/2030038681461874866" target="_blank" rel="noopener">Join the Gang on X</a>
+        </div>
+    </div>
+
+    <div id="toast">Contract Address Copied!</div>
+
+    <!-- Lore Section -->
+    <div class="lore-section">
+        <div class="lore-img-wrapper">
+            <img src="https://i.ibb.co/Kxv1BD1C/CBCB.png" alt="$CryptoBandits The Gang">
+        </div>
+        <div class="lore-text">
+            <h2>$CryptoBandits</h2>
+            <p>Masks up, bags ready. <strong>$CryptoBandits</strong> rode into Solana to run off with the bull market's loot. No badges, no rules — just a gang of degenerates with a getaway plan.</p>
+            <p>Built by outlaws, for outlaws. Every holder rides with the gang, every dip is just the crew reloading. $CryptoBandits isn't here to ask permission. It's here for the score.</p>
+        </div>
+    </div>
+
+    <!-- PFP Generator Section -->
+    <div class="pfp-section">
+        <h2>MASK UP YOUR <span>PFP</span></h2>
+        <p>Drop your X (Twitter) handle below and the gang will kit you out as an official $CryptoBandits outlaw.</p>
+        
+        <div class="pfp-controls">
+            <input type="text" id="twitterHandle" placeholder="@username" autocomplete="off">
+            <button class="pfp-btn" id="generatePfpBtn" onclick="generatePFP()">Generate</button>
+        </div>
+        
+        <div class="canvas-container">
+            <div id="pfpLoader" class="loader"></div>
+            <canvas id="pfpCanvas" width="400" height="400"></canvas>
+            <div id="pfpStatus"></div>
+            <button class="pfp-btn" id="downloadPfpBtn" onclick="downloadPFP()" style="display: none; margin-top: 20px; width: 100%;">Download PFP</button>
+        </div>
+    </div>
+
+    <!-- Heist Plan / Roadmap -->
+    <div class="schedule-section">
+        <h2>THE <span>HEIST PLAN</span></h2>
+        <p class="subtitle">Three phases. One score.</p>
+        
+        <div class="table-container">
+            <table class="schedule-table">
+                <thead>
+                    <tr>
+                        <th>Phase</th>
+                        <th>Codename</th>
+                        <th>Status</th>
+                        <th>Objective</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="highlight-row">
+                        <td>Phase 01</td>
+                        <td class="codename">"The Case"</td>
+                        <td class="status-played">Complete</td>
+                        <td>Stealth launch, fair LP lock, gang assembled</td>
+                    </tr>
+                    <tr>
+                        <td>Phase 02</td>
+                        <td class="codename">"The Score"</td>
+                        <td class="status-upcoming">In Progress</td>
+                        <td>CEX listings, viral takeover, X raids</td>
+                    </tr>
+                    <tr>
+                        <td>Phase 03</td>
+                        <td class="codename">"The Getaway"</td>
+                        <td class="status-upcoming">Upcoming</td>
+                        <td>Staking vault, loot rewards, full send</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Chart Section -->
+    <div class="chart-section">
+        <h2>TRACK THE <span>LOOT</span></h2>
+        <div id="dexscreener-embed">
+            <iframe src="https://dexscreener.com/solana/5YZpvjmTPCXgbmKA2oALgfJBaNdC9HyZMmFgFuQEDgcX?embed=1&loadChartSettings=0&trades=0&tabs=0&info=0&chartLeftToolbar=0&chartTheme=dark&theme=dark&chartStyle=1&chartType=usd&interval=15"></iframe>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>$CryptoBandits &copy; 2026. Ride or die.
+            <span class="disclaimer">Not financial advice. Outlaws make their own rules — and their own risk decisions.</span>
+        </p>
+    </footer>
+
+    <script>
+        function copyCA() {
+            const caText = document.getElementById("ca-text").innerText;
+            
+            // Create a temporary textarea element
+            const tempTextArea = document.createElement("textarea");
+            tempTextArea.value = caText;
+            document.body.appendChild(tempTextArea);
+            
+            // Select and copy
+            tempTextArea.select();
+            document.execCommand("copy");
+            
+            // Remove the temporary element
+            document.body.removeChild(tempTextArea);
+            
+            // Show toast notification
+            const toast = document.getElementById("toast");
+            toast.className = "show";
+            setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
+        }
+
+        // --- PFP Generator Logic (AI Powered via Gemini Imagen) ---
+        const canvas = document.getElementById('pfpCanvas');
+        const ctx = canvas.getContext('2d');
+        const generateBtn = document.getElementById('generatePfpBtn');
+        const downloadBtn = document.getElementById('downloadPfpBtn');
+        const usernameInput = document.getElementById('twitterHandle');
+        const statusText = document.getElementById('pfpStatus');
+        const loader = document.getElementById('pfpLoader');
+
+        // Exponential backoff retry logic for API calls
+        async function fetchWithRetry(url, options, retries = 5) {
+            const delays = [1000, 2000, 4000, 8000, 16000];
+            for (let i = 0; i < retries; i++) {
+                try {
+                    const response = await fetch(url, options);
+                    const isJson = response.headers.get('content-type')?.includes('application/json');
+                    const data = isJson ? await response.json() : await response.text();
+                    
+                    if (!response.ok) {
+                        throw new Error(data.message || data.error || `HTTP error! status: ${response.status}`);
+                    }
+                    return data;
+                } catch (e) {
+                    if (i === retries - 1) throw e;
+                    await new Promise(res => setTimeout(res, delays[i]));
+                }
+            }
+        }
+
+        function generatePFP() {
+            let username = usernameInput.value.trim();
+            if(!username) {
+                statusText.innerText = "Please enter a username!";
+                return;
+            }
+            if(username.startsWith('@')) username = username.substring(1);
+
+            // Set UI to loading state
+            statusText.innerText = "Fetching profile and scouting the job...";
+            generateBtn.disabled = true;
+            canvas.style.display = 'none';
+            downloadBtn.style.display = 'none';
+            loader.style.display = 'block';
+
+            const img = new Image();
+            img.crossOrigin = "Anonymous";
+            // Get original avatar via unavatar
+            img.src = `https://unavatar.io/x/${username}?fallback=https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png&size=400`;
+
+            img.onload = async () => {
+                try {
+                    // 1. Get Base64 of original PFP
+                    const tempCanvas = document.createElement('canvas');
+                    tempCanvas.width = 400;
+                    tempCanvas.height = 400;
+                    const tempCtx = tempCanvas.getContext('2d');
+                    tempCtx.drawImage(img, 0, 0, 400, 400);
+                    const base64Original = tempCanvas.toDataURL('image/jpeg', 0.9).split(',')[1];
+
+                    statusText.innerText = "Gang is masking you up... This takes a few seconds.";
+
+                    // 2. Call our Vercel Serverless Function
+                    const url = '/api/generate-pfp';
+                    const payload = { image: base64Original };
+                    
+                    const result = await fetchWithRetry(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    const aiBase64 = result.generatedImage;
+
+                    if (!aiBase64) {
+                        throw new Error("No image data returned from our server.");
+                    }
+
+                    // 3. Draw AI generated image onto the main canvas
+                    const aiImg = new Image();
+                    aiImg.onload = () => {
+                        ctx.clearRect(0, 0, canvas.width, canvas.height);
+                        ctx.drawImage(aiImg, 0, 0, 400, 400);
+
+                        // Overlay Gold Border
+                        ctx.lineWidth = 20;
+                        ctx.strokeStyle = '#d4af37';
+                        ctx.strokeRect(0, 0, 400, 400);
+
+                        // Overlay Watermark Text
+                        ctx.fillStyle = '#39ff14';
+                        ctx.font = 'bold 20px Bebas Neue';
+                        ctx.textAlign = 'right';
+                        ctx.shadowColor = '#000';
+                        ctx.shadowBlur = 10;
+                        ctx.fillText('$CRYPTOBANDITS', 380, 30);
+
+                        // Restore UI
+                        loader.style.display = 'none';
+                        canvas.style.display = 'block';
+                        statusText.innerText = "Outlaw PFP Generated Successfully!";
+                        downloadBtn.style.display = 'inline-block';
+                        generateBtn.disabled = false;
+                    };
+                    aiImg.src = `data:image/jpeg;base64,${aiBase64}`;
+
+                } catch (error) {
+                    console.error("Generation Error:", error);
+                    loader.style.display = 'none';
+                    statusText.innerText = `Error: ${error.message || 'AI Generation failed. Check key limits.'}`;
+                    generateBtn.disabled = false;
+                }
+            };
+
+            img.onerror = () => {
+                loader.style.display = 'none';
+                statusText.innerText = "Error loading profile image. Check the X handle!";
+                generateBtn.disabled = false;
+            };
+        }
+
+        function downloadPFP() {
+            const link = document.createElement('a');
+            link.download = 'cryptobandits_outlaw_pfp.jpg';
+            link.href = canvas.toDataURL('image/jpeg', 0.9);
+            link.click();
+        }
+    </script>
+</body>
+</html>
